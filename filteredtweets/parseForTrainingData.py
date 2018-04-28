@@ -2,8 +2,8 @@ import csv
 import json
 
 def main():
-    hurricaneKeyWords = ["hurricane", "flood", "houston", "texas", "storm"]
-    weinsteinKeyWords = ["weinstein", "assault", "harassment", "metoo"]
+    hurricaneKeyWords = ["hurricane"]
+    weinsteinKeyWords = ["weinstein"]
     results = []
     with open("harvey2.csv", encoding='mac_roman') as csvfile:
         reader = csv.reader(csvfile) # change contents to floats
@@ -42,9 +42,9 @@ def main():
     with open('weinstein.json', 'w') as outfile:
         json.dump(weinsteinTweets, outfile, indent=4, sort_keys=True,)
 
-    print(resultsCount)
-    print(hurricaneCount)
-    print(weinsteinCount)
+    print("Total Results: %s" % (resultsCount))
+    print("Hurricane Results: %s" % (hurricaneCount))
+    print("Weinstein Results: %s" % (weinsteinCount))
 
 if __name__ == '__main__':
     main()
