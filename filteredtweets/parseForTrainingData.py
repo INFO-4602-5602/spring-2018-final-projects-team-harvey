@@ -2,8 +2,8 @@ import csv
 import json
 
 def main():
-    hurricaneKeyWords = ["hurricane"]
-    weinsteinKeyWords = ["weinstein"]
+    hurricaneKeyWord = "hurricane"
+    weinsteinKeyWord = "weinstein"
     results = []
     with open("harvey2.csv", encoding='mac_roman') as csvfile:
         reader = csv.reader(csvfile) # change contents to floats
@@ -28,36 +28,57 @@ def main():
 
     hurricaneTweets = []
     weinsteinTweets = []
+    noMatch = []
+    bothCount = 0
+    noMatchCount = 0
     hurricaneCount = 0
     weinsteinCount = 0
     print("Searching for key words")
     for n,row in enumerate(newResults):
-        for word in hurricaneKeyWords:
-            if word in row["text"].lower():
-                hurricaneTweets.append(row)
-                hurricaneCount += 1
-                break
-        for word in weinsteinKeyWords:
-            if word in row["text"].lower():
-                weinsteinTweets.append(row)
-                weinsteinCount += 1
-                break
-        if n>500000:
-            break
+        if hurricaneKeyWord in row["text"].lower() and weinsteinKeyWord in row["text"].lower():
+            bothCount += 1
+        elif hurricaneKeyWord in row["text"].lower():
+            hurricaneTweets.append(row)
+            hurricaneCount += 1
+        elif weinsteinKeyWord in row["text"].lower():
+            weinsteinTweets.append(row)
+            weinsteinCount += 1
+        else:
+            noMatch.append(row)
+            noMatchCount += 1
     del newResults
 
-    with open('hurricane.json', 'w') as outfile:
-        print("Writing hurricane.json")
-        json.dump(hurricaneTweets, outfile, indent=4, sort_keys=True,)
+    B = hurricaneTweets[0:int(len(hurricaneTweets)/2)]
+    C = hurricaneTweets[int(len(hurricaneTweets)/2):int(len(hurricaneTweets))+1]
 
-    with open('weinstein.json', 'w') as outfile:
+    with open('hurricane0.json', 'w') as outfile:
+        print("Writing hurricane0.json")
+        json.dump(B, outfile, indent=4, sort_keys=True,)
+
+    with open('hurricane1.json', 'w') as outfile:
+        print("Writing hurricane1.json")
+        json.dump(C, outfile, indent=4, sort_keys=True,)
+
+    with open('weinstein0.json', 'w') as outfile:
         print("Writing weinstein.json")
         json.dump(weinsteinTweets, outfile, indent=4, sort_keys=True,)
+
+    B = noMatch[0:int(len(noMatch)/2)]
+    C = noMatch[int(len(noMatch)/2):int(len(noMatch))+1]
+
+    with open('noMatch0.json', 'w') as outfile:
+        print("Writing noMatch0.json")
+        json.dump(B, outfile, indent=4, sort_keys=True)
+
+    with open('noMatch1.json', 'w') as outfile:
+        print("Writing noMatch1.json")
+        json.dump(C, outfile, indent=4, sort_keys=True)
 
     print("Total Results: %s" % (resultsCount))
     print("Excepted: %s" % (exceptions))
     print("Hurricane Results: %s" % (hurricaneCount))
     print("Weinstein Results: %s" % (weinsteinCount))
+    print("NoMatch Results: %s" % (noMatchCount))
 
 if __name__ == '__main__':
     main()
