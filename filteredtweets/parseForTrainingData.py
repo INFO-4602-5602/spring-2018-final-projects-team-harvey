@@ -34,7 +34,7 @@ def main():
     hurricaneCount = 0
     weinsteinCount = 0
     print("Searching for key words")
-    for n,row in enumerate(newResults):
+    for row in newResults:
         if hurricaneKeyWord in row["text"].lower() and weinsteinKeyWord in row["text"].lower():
             bothCount += 1
         elif hurricaneKeyWord in row["text"].lower():
