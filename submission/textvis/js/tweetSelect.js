@@ -31,7 +31,7 @@ function getFeatureData(topLevel, feature){
 
   $.getJSON(newTopLevel + '/' + feature + '.json')
      .done(function (data) {
-         displayData(data);
+         displayData(data.slice(0,5000));
      });
 }
 
@@ -53,8 +53,7 @@ function generateTweet(data) {
 
   var str = data.tweet;
   var str = str.replace(data.feature, "<mark><b>" + data.feature + "</b></mark>");
-
-  tweet.innerHTML = '"' + str + '"' + '<br /><small class="text-muted">Mon Mar 05 03:15:43 +0000 2018</small>';
+  tweet.innerHTML = '"' + str + '"' + '<br /><small class="text-muted">' + data.date + '</small>';
   tweet.className = "list-group-item";
   return tweet;
 }
@@ -86,7 +85,7 @@ function getWeinsteinFeatures(disabledOption) {
 }
 
 function getHurricaneFeatures(disabledOption) {
-  var hurricaneFeaturesWords = ["hashtagtexassearchandrescue","hashtaghelpandhopeforhouston","hashtaghelpforharvey","hashtaghelpforhouston","hashtaghelpharvey","hashtaghelphouston","hashtaghelpincrisis","hashtaghelping","hashtaghelpacripple","hashtaghelpinghand"]
+  var hurricaneFeaturesWords = ["hashtagtexassearchandrescue","hashtaghelpforharvey","hashtaghelpforhouston","hashtaghelpharvey","hashtaghelphouston","hashtaghelpincrisis","hashtaghelping","hashtaghelpinghand"]
   var hurricaneFeatures = document.createElement("select");
   hurricaneFeatures.className = "form-control";
   hurricaneFeatures.id = "featureSelect"
