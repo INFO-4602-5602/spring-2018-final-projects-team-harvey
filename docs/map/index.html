@@ -3,16 +3,16 @@
 <head>
  <title>Harvey tweets</title>
 
-    <link 
-        rel="stylesheet" 
-        href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"
     />
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 
     <script
-        src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
+        src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js">
     </script>
-    
+
 </head>
 <body>
     <h3>Harvey Tweets</h3>
@@ -21,45 +21,45 @@
  <div id="map" style="width: 600px; height: 400px"></div>
 
  <script type="text/javascript">
- 
+
         var map = L.map('map').setView([37.8, -96], 4);
-        mapLink = 
+        mapLink =
             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; ' + mapLink + ' Contributors',
             maxZoom: 18,
             }).addTo(map);
-    
+
  // Initialize the SVG layer
- map._initPathRoot()    
+ map._initPathRoot()
 
  // We pick up the SVG from the map object
  var svg = d3.select("#map").select("svg"),
  g = svg.append("g");
- 
+
  d3.json("data/geo_data2.json", function(collection) {
   // Add a LatLng object to each item in the dataset
   collection.features.forEach(function(d) {
       d.colorcode = d.properties.classifier
-   
+
       d.LatLng = new L.LatLng(d.geometry[1],
       d.geometry[0]);
 
       console.log(d.colorcode);
   })
-  
+
   var feature = g.selectAll("circle")
    .data(collection.features)
    .enter().append("circle")
-   //.style("stroke", "black") 
+   //.style("stroke", "black")
    .style("stroke", function(d){
       if (d.colorcode == "hurricane"){
           return "red";
       }
         return "blue";
   })
-   .style("opacity", .6) 
+   .style("opacity", .6)
    //.style("fill", "red")
   .style("fill", function(d){
       if (d.colorcode == "hurricane"){
@@ -67,7 +67,7 @@
       }
         return "blue";
   })
-   //.attr("r", 1);  
+   //.attr("r", 1);
   .attr("r", function(d){
       if (d.colorcode == "hurricane"){
           return 2;
@@ -75,20 +75,20 @@
         return 2;
   });
 
-  
+
   map.on("viewreset", update);
   update();
 
   function update() {
-   feature.attr("transform", 
-   function(d) { 
-       return "translate("+ 
-    map.latLngToLayerPoint(d.LatLng).x +","+ 
+   feature.attr("transform",
+   function(d) {
+       return "translate("+
+    map.latLngToLayerPoint(d.LatLng).x +","+
     map.latLngToLayerPoint(d.LatLng).y +")";
        }
    )
   }
- })    
+ })
 </script>
 </body>
-</html> 
+</html>
